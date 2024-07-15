@@ -19,10 +19,6 @@ class Register extends Component
     //     dd('Component is mounted');
     // }
 
-    public function login(){
-
-    }
-
     public function create(){
         $this->validate([
             'name' => 'required',

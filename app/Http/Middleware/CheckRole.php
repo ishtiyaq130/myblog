@@ -18,6 +18,16 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next)
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
+       $user = $request->user();
+
+        if (! $user || ! in_array($user->role, $roles)) {
+            abort(403, 'Unauthorized');
+        }
+
         return $next($request);
     }
 }

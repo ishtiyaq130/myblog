@@ -12,7 +12,7 @@
                 {{ session('error') }}
             </div>
         @endif
-    <form wire:submit.prevent="save" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+    <form wire:submit.prevent="save" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
         @csrf
         <div class="">
             <label for="title" class="block text-gray-700 text-sm font-bold">Title</label>

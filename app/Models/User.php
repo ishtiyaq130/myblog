@@ -35,6 +35,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $primaryKey = 'user_id';
+
     public function blogs()
     {
         return $this->hasMany(Blog::class);

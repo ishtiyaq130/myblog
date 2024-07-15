@@ -1,5 +1,5 @@
 <div class="container mx-auto p-6">
-    <h1 class="ml-4 text-2xl font-bold mb-6">Create a New Blog Post</h1>
+    <h1 class="ml-4 text-2xl font-bold mb-6">Edit Blog Post</h1>
 
     @if (session()->has('message'))
         <div class="alert alert-success">
@@ -79,12 +79,14 @@
         </select>
     </div>
 
+    @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'publish'))
     <div class="mt-4">
         <label for="status" class="block text-gray-700 text-sm font-bold">Unpublish</label>
         <input type="radio" id="status" class="" wire:model="status" value="0">
         <label for="status" class="block text-gray-700 text-sm font-bold">Publish</label>
         <input type="radio" id="status" class="" wire:model="status" value="1">
     </div>
+    @endif
 
     <div class="container">
         <button type="submit" class="mt-4 p-2 rounded dark:bg-gray-900 text-white">Submit</button>

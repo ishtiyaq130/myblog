@@ -8,6 +8,8 @@ use Livewire\WithPagination;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\User;
+use App\Helpers\RoleHelper;
+use Illuminate\Support\Facades\Auth;
 
 class Myblog extends Component
 {
@@ -36,6 +38,7 @@ class Myblog extends Component
 
     public function delete($id)
     {
+        $this->authorize('delete');
         Blog::find($id)->delete();
     }
 
@@ -49,15 +52,17 @@ class Myblog extends Component
         $this->resetPage();
     }
 
+    public function updatingSelectedCategory()
+    {
+        $this->resetPage();
+    }
+
     public function updatingSelectedDate()
     {
         $this->resetPage();
     }
 
-    public function updatingSelectedCategory()
-    {
-        $this->resetPage();
-    }
+
 
     public function render()
     {
@@ -89,6 +94,15 @@ class Myblog extends Component
             'categories' => $categories,
             'users' => $users,
         ]);
+    }
+
+    private function authorize($permission)
+    {
+        $user = Auth::user();
+
+        if (!RoleHelper::can($user->role, $permission)) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 
     public function update($id)

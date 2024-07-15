@@ -12,13 +12,13 @@
 </head>
 <body>
 
-    @include('layouts.nav')
+    <x-nav />
 
     <main>
-        @yield('content')
+        {{ $slot }}
     </main>
 
-    @include('layouts.footer')
+    <x-footer />
     @livewireScripts
 </body>
 </html>

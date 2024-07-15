@@ -9,6 +9,9 @@ use App\Models\Blog;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Helpers\RoleHelper;
+
 
 
 class CreatePost extends Component
@@ -23,6 +26,7 @@ class CreatePost extends Component
 
     public function save(){
         // dd($this->user_id);
+        $this->authorize('create');
         $this->validate([
             'title' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
@@ -48,6 +52,14 @@ class CreatePost extends Component
         }
     }
 
+    private function authorize($permission)
+    {
+        $user = Auth::user();
+
+        if (!RoleHelper::can($user->role, $permission)) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
 
     public function render()
     {

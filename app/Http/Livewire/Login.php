@@ -17,28 +17,29 @@ class Login extends Component
     public $registerForm = false;
 
 
+    protected $rules = [
+        'email' => 'required|email',
+        'password' => 'required',
+    ];
+
+
     public function login()
     {
-        $validatedDate = $this->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $validatedData = $this->validate();
 
-        if(\Auth::attempt(array('email' => $this->email, 'password' => $this->password))){
-                session()->flash('message', "You have been successfully login.");
-                return \redirect('/');
-        }else{
-            session()->flash('error', 'email and password are wrong.');
+        if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
+            request()->session()->regenerate();
+            session()->flash('message', 'You have been successfully logged in.');
+            return redirect()->to('/');
+        } else {
+            session()->flash('error', 'Email and password are wrong.');
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        session()->invalidate();
-        session()->regenerateToken();
-
-        return redirect('/');
+        return redirect('login');
     }
 
     private function resetInputFields(){

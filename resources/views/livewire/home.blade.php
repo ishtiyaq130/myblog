@@ -7,8 +7,10 @@
             <div class="px-6 py-4">
               <div class="font-bold text-2xl mb-2">{{$blogs->title}}</div>
               <p class="text-gray-700 text-base">{{ $blogs->users->name }}</p>
-              <p class="text-gray-700 text-base">{{ $blogs->category->category_name }}</p>
-              <a href="{{ route('blogs.show', ['id' => $blogs->blog_id]) }}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-grey-500">Read</a>
+              <p class="text-gray-700  text-base">{{ $blogs->category->category_name }}</p>
+              <div class="container mt-4">
+              <a href="{{ route('blogs.show', ['id' => $blogs->blog_id]) }}" class=" border border-grey-500 m-4 py-2 px-3 rounded leading-tight text-white dark:bg-gray-800">Read</a>
+            </div>
             </div>
         </div>
     </div>

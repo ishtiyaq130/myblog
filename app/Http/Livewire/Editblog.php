@@ -10,6 +10,9 @@ use App\Models\Category;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\RoleHelper;
+use Illuminate\Support\Facades\Auth;
+
 
 class Editblog extends Component
 {
@@ -33,6 +36,7 @@ class Editblog extends Component
     }
 
     public function updateblog(){
+        $this->authorize('update');
         $this->validate([
             'title' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
@@ -62,5 +66,14 @@ class Editblog extends Component
 
         }
 
+    }
+
+    private function authorize($permission)
+    {
+        $user = Auth::user();
+
+        if (!RoleHelper::can($user->role, $permission)) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

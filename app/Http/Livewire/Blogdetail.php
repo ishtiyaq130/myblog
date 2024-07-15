@@ -5,36 +5,56 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Blog;
 use App\Models\Comments;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 class Blogdetail extends Component
 {
 
     public $blog;
     public $comment;
-    public $blog_id;
-    public $user_id;
+
 
     public function mount($id)
     {
         $this->blog = Blog::with('users', 'category')->findOrFail($id);
+        $this->blog_id = $id;
+        // dd($this->blog_id);
     }
 
-    public function render()
+    protected $rules = [
+        'comment' => 'required|min:5',
+    ];
+
+    public function save()
     {
-        return view('livewire.blogdetail');
-    }
+        $this->validate();
 
-    public function create(){
-        try{
-        $comments = new Comments();
-        $comments->comment = $this->comment;
-        $comments->blog_id = Auth::user_id();
-        $comments->user_id = $this->blog_id ;
-        $comments->save();
-        $this->comment = '';
-        session()->flash('message','New Record Created Successfully');
-        }catch(\Exception $e){
-            session()->flash('error', 'error to create new rocord'.$e->getMessage());
+        try {
+
+            \Log::info('Comment submitted:', ['comment' => $this->comment]);
+            $comment = new Comments();
+            $comment->comment = $this->comment;
+            $comment->blog_id = $this->blog_id;
+            $comment->user_id = Auth::id();
+            $comment->save();
+
+            $this->reset('comment');
+            session()->flash('message', 'New Record Created Successfully');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error creating new record: ' . $e->getMessage());
         }
     }
+    public function render()
+    {
+        $user = User::all();
+        $comments = Comments::where('blog_id', $this->blog_id)->latest()->get();
+
+        return view('livewire.blogdetail', [
+            'comments' => $comments,
+            'user' => $user,
+        ]);
+    }
+
 }

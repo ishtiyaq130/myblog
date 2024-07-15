@@ -16,31 +16,31 @@
         <form wire:submit.prevent="login">
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
-                <input type="email" id="email" wire:model="email" class="w-full p-2 border rounded">
+                <input type="email" id="email" wire:model="email" class="w-full p-2 border rounded" autocomplete="email">
                 @error('email') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">Password</label>
-                <input type="password" id="password" wire:model="password" class="w-full p-2 border rounded">
+                <input type="password" id="password" wire:model="password" class="w-full p-2 border rounded" autocomplete="current-password">
                 @error('password') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 
             <button type="submit" class="w-full bg-indigo-500 text-white p-2 rounded">Login</button>
-            <a wire:click.prevent="toggleRegisterForm" class="text-blue-500 mt-3 cursor-pointer">Register if you don't have an account</a>
+            <a wire:click.prevent="toggleRegisterForm" class="text-blue-500 mt-3 cursor-pointer">Register if you dont have an account</a>
         </form>
     @else
         <h1 class="text-2xl font-bold mb-6 text-center">Registration Form</h1>
         <form wire:submit.prevent="registerStore">
             <div class="mb-4">
                 <label for="name" class="block text-gray-700">Name</label>
-                <input type="text" id="name" wire:model="name" class="w-full p-2 border rounded">
+                <input type="text" id="name" wire:model="name" class="w-full p-2 border rounded" autocomplete="name">
                 @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 
             <div class="mb-4">
                 <label for="email" class="block text-gray-700">Email</label>
-                <input type="email" id="email" wire:model="email" class="w-full p-2 border rounded">
+                <input type="email" id="email" wire:model="email" class="w-full p-2 border rounded" autocomplete="email">
                 @error('email') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 
@@ -56,7 +56,7 @@
 
             <div class="mb-4">
                 <label for="password" class="block text-gray-700">Password</label>
-                <input type="password" id="password" wire:model="password" class="w-full p-2 border rounded">
+                <input type="password" id="password" wire:model="password" class="w-full p-2 border rounded" >
                 @error('password') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
 

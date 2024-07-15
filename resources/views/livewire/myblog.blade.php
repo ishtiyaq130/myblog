@@ -18,7 +18,6 @@
                 @enderror
             </div>
 
-            <!-- Filter by Category -->
             <div class="relative">
                 <select wire:model="selectedCategory" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
                     <option value="">Filter by Category</option>
@@ -29,19 +28,21 @@
             </div>
 
 
-            <!-- Search by Title -->
             <div class="relative">
                 <input type="text" wire:model="search" placeholder="Search by Title" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
             </div>
 
             <div class="relative">
-                <input type="date" wire:mode:"selectedDate" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                <input type="date" wire:model:"selectedDate" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
             </div>
 
             <!-- Create New Blog -->
+            @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'create'))
             <div class="relative">
                 <a href="{{ url('/create') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Create</a>
             </div>
+            @endif
+
         </div>
 
         <!-- Table -->
@@ -70,7 +71,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->users->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->title }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->category->category_name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->publish_at }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ \Carbon\Carbon::parse($blog->publish_at)->format('Y-m-d') }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                                     @if ($blog->status == 0)
                                         {{ 'Unpublish' }}
@@ -80,7 +81,9 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                                     <button wire:click="update({{$blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Edit</button>
+                                    @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'delete'))
                                     <button wire:click="delete({{ $blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delete</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

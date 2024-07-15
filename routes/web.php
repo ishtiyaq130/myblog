@@ -17,11 +17,21 @@ use App\Http\Livewire\Blogdetail;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('components.pages.home');
 });
+Route::view('login','livewire.login_form')->name('login');
+
+
+// dd(auth()->user());
+// Route::middleware(['auth' => 'role:0,2'])->group(function() {
+// });
+// ->middleware('role:0');
+
+// Route::middleware(['auth'])->group(function () {
+// })->middleware('role:1');
 
 Route::get('/create', function () {
-    return view('create');
+    return view('components.pages.create');
 });
 
 // Route::get('/editblog/{{id}}', function () {
@@ -38,13 +48,17 @@ Route::get('/create', function () {
 //     return view('login');
 // });
 
-Route::get('/blogs/{id}', Blogdetail::class)->name('blogs.show');
-Route::get('/register', Register::class)->name('register');
-Route::view('login','livewire.login_form')->name('login');
-Route::post('/logout', [Login::class, 'logout'])->name('logout');
+Route::get('/blogs/{id}',function ($id) {
+    return view('components.pages.index',['id' => $id]);
+})->name('blogs.show');
 
+
+Route::post('/logout', function() {
+    Auth::logout();
+    return redirect('login');
+})->name('logout');
 Route::get('/myblog', function () {
-    return view('myblog');
+    return view('components.pages.myblog');
 });
 Route::group(['middleware' => ['auth']], function () {
 });
