@@ -15,13 +15,18 @@ class Blog extends Model
         'title', 'thumbnail', 'content', 'user_id', 'category_id', 'status', 'publish_at'
     ];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id', 'user_id');
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class,'category_id');
+    }
+
+    public function comments()
+    {
+        return $this->belongsTo(Comments::class)->whereNull('parant_id');
     }
 }

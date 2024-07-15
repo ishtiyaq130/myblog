@@ -8,15 +8,13 @@
     @livewireStyles
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <script src="{{ mix('js/app.js') }}"></script>
-
+        <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="">
 
     <div class="container mt-8">
         <livewire:login/>
     </div>
-
-
     @livewireScripts
 </body>
 </html>

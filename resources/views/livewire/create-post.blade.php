@@ -62,6 +62,7 @@
             <label for="category_id" class="block text-gray-700 text-sm font-bold">Category</label>
             <select wire:model="category_id" id="category_id" required
                     class="mt-2 block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Select an category</option>
                     @foreach ($category as $category )
                     <option value="{{$category->category_id}}">{{ $category->category_name }}</option>
                     @endforeach

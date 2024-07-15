@@ -5,161 +5,99 @@
         <div class="flex items-center space-x-4 mb-4">
             <!-- Filter by Author -->
             <div class="relative">
-                <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                <select wire:model="selectedAuthor" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
                     <option value="">Filter by Author</option>
-                    <option value="author1">Author 1</option>
-                    <option value="author2">Author 2</option>
-                    <!-- Add more options as needed -->
+                    @foreach ($users as $user)
+                        @if ($user->role == 0)
+                            <option value="{{ $user->user_id }}">{{ $user->name }}</option>
+                        @endif
+                    @endforeach
                 </select>
+                @error('selectedAuthor')
+                    <span class="error text-danger">{{ $message }}</span>
+                @enderror
             </div>
+
             <!-- Filter by Category -->
             <div class="relative">
-                <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                <select wire:model="selectedCategory" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
                     <option value="">Filter by Category</option>
-                    <option value="category1">Category 1</option>
-                    <option value="category2">Category 2</option>
-                    <!-- Add more options as needed -->
-                </select>
-            </div>
-            <!-- Search by Title -->
-            <div class="relative">
-                <input type="text" placeholder="Search by Title" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
-            </div>
-            <!-- Sort by Publish Date -->
-            <div class="relative">
-                <select class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
-                    <option value="">Sort by Publish Date</option>
-                    <option value="asc">Oldest first</option>
-                    <option value="desc">Newest first</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
+                    @endforeach
                 </select>
             </div>
 
+
+            <!-- Search by Title -->
             <div class="relative">
-                <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Create</a>
+                <input type="text" wire:model="search" placeholder="Search by Title" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+            </div>
+
+            <div class="relative">
+                <input type="date" wire:mode:"selectedDate" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+            </div>
+
+            <!-- Create New Blog -->
+            <div class="relative">
+                <a href="{{ url('/create') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Create</a>
             </div>
         </div>
 
         <!-- Table -->
-        <div class="pt-20">
-            <div class="container mx-auto p-6">
-                <!-- Table -->
-                <div class="overflow-x-auto">
-                    <table class="table-fixed w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                        <thead class="bg-gray-100 dark:bg-gray-700">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Auther</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publish-At</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+        <div class="overflow-x-auto">
+            @if ($check == true)
+            <table class="table-fixed w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                <thead class="bg-gray-100 dark:bg-gray-700">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publish Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if ($blogs && count($blogs) > 0)
+                        @foreach ($blogs as $blog)
                             <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $i++}}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->blog_id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->users->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->title }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->category->category_name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->publish_at }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                                    @if ($blog->status == 0)
+                                        {{ 'Unpublish' }}
+                                    @else
+                                        {{ 'Publish' }}
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                                    <button wire:click="update({{$blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Edit</button>
+                                    <button wire:click="delete({{ $blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delete</button>
                                 </td>
                             </tr>
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-
-                            <tr class="border-t border-gray-200 dark:border-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">1</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Malcolm Lockyer</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Hello</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Tech</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">10-09-2024</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white"><a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delet</a>
-                                    <a href="{{url('/create')}}" class=" border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Update</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="7" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">No blogs found.</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+            <div class="mt-4">
+                {{ $blogs->links() }}
             </div>
+            @else
+            <livewire:editblog :u_id="$u_id" :user_id="$user_id" :category_id="$category_id" :title="$title" :content="$content" :thumbnail="$thumbnail" :status="$status"/>
+            @endif
+
         </div>
     </div>
 </div>

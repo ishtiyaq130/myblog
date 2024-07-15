@@ -21,7 +21,6 @@ class CreatePost extends Component
     public $category_id;
     public $user_id;
 
-
     public function save(){
         // dd($this->user_id);
         $this->validate([
@@ -32,8 +31,9 @@ class CreatePost extends Component
             'user_id' => 'required|exists:users,user_id',
         ]);
 
-        $thumbnail = $this->thumbnail ? $this->thumbnail->store('images', 'public') : null;
-        try{
+        $this->thumbnail = $this->thumbnail->store('images', 'public');
+            try{
+            // dd( $thumbnailPath);
             $blog = new Blog();
             $blog->title = $this->title;
             $blog->thumbnail = $this->thumbnail;
@@ -41,7 +41,6 @@ class CreatePost extends Component
             $blog->category_id = $this->category_id;
             $blog->user_id = $this->user_id;
             $blog->save();
-
             session()->flash('message','New Record Created Successfully');
             return \redirect("myblog");
         }catch(\Exception $e){

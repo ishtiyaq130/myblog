@@ -17,7 +17,7 @@ class CategorySeeder extends Seeder
     {
         $category = new Category();
         $faker = Faker::create();
-        $category->category_name = "LifeStyle";
+        $category->category_name = "Tech";
         $category->save();
     }
 }

@@ -1,3 +1,4 @@
+<!-- resources/views/layouts/app.blade.php or the main layout file -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +8,12 @@
     <title>MyBlog</title>
     @livewireStyles
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 </head>
 <body>
-
     @include('layouts.nav')
     <livewire:myblog/>
     @include('layouts.footer')
-
     @livewireScripts
 </body>
 </html>
