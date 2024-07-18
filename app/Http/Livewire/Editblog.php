@@ -36,7 +36,7 @@ class Editblog extends Component
     }
 
     public function updateblog(){
-        $this->authorize('update');
+        // $this->authorize('update');
         $this->validate([
             'title' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
@@ -55,15 +55,20 @@ class Editblog extends Component
             $blog->thumbnail=$this->thumbnail;
             $blog->content=$this->content;
             $blog->status=$this->status;
-            $blog->publish_at = now()->toDateString();
-            $blog->save();
 
+            if($this->status == 0){
+                $blog->publish_at = null;
+            }
+            else{
+                $blog->publish_at = now()->toDateString();
+            }
+
+            $blog->save();
 
             session()->flash('message','updated successfully');
             return \redirect('/myblog');
         }catch(\Exception $e){
             session()->flash('message','not updated');
-
         }
 
     }

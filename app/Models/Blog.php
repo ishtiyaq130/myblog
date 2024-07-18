@@ -10,6 +10,9 @@ class Blog extends Model
     use HasFactory;
     protected $table = 'blog';
     protected $primaryKey = 'blog_id';
+    protected $casts = [
+        'publish_at' => 'datetime',
+    ];
 
     protected $fillable = [
         'title', 'thumbnail', 'content', 'user_id', 'category_id', 'status', 'publish_at'

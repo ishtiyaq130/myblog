@@ -1,6 +1,6 @@
 <div class="pt-20">
     <div class="container mx-auto p-6">
-
+        @if ($check == true)
         <!-- Filtering Controls -->
         <div class="flex items-center space-x-4 mb-4">
             <!-- Filter by Author -->
@@ -32,11 +32,6 @@
                 <input type="text" wire:model="search" placeholder="Search by Title" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
             </div>
 
-            <div class="relative">
-                <input type="date" wire:model:"selectedDate" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
-            </div>
-
-            <!-- Create New Blog -->
             @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'create'))
             <div class="relative">
                 <a href="{{ url('/create') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Create</a>
@@ -47,16 +42,26 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-            @if ($check == true)
-            <table class="table-fixed w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+
+            <table class=" table-fixed w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <thead class="bg-gray-100 dark:bg-gray-700">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publish Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <a href="#" wire:click.prevent="sortBy('publish_at')">
+                                Publish Date
+                                @if ($sortField == 'publish_at')
+                                    @if ($sortDirection == 'asc')
+                                        <span>&uarr;</span>
+                                    @else
+                                        <span>&darr;</span>
+                                    @endif
+                                @endif
+                            </a>
+                        </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                     </tr>
@@ -67,11 +72,13 @@
                         @foreach ($blogs as $blog)
                             <tr class="border-t border-gray-200 dark:border-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $i++}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->blog_id }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->users->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->title }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->category->category_name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ \Carbon\Carbon::parse($blog->publish_at)->format('Y-m-d') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">@if ($blog->status == 1)
+                                    {{ \Carbon\Carbon::parse($blog->publish_at)->format('d-m-Y') }}
+                                @endif
+                            </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                                     @if ($blog->status == 0)
                                         {{ 'Unpublish' }}
@@ -82,7 +89,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                                     <button wire:click="update({{$blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Edit</button>
                                     @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'delete'))
-                                    <button wire:click="delete({{ $blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delete</button>
+                                    <button wire:click="delete({{ $blog->blog_id }})" wire:confirm="Are you sure you want to delete this project?" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delete</button>
                                     @endif
                                 </td>
                             </tr>

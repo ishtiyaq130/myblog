@@ -8,7 +8,6 @@ use App\Models\Comments;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
-
 class Blogdetail extends Component
 {
 
@@ -24,7 +23,7 @@ class Blogdetail extends Component
     }
 
     protected $rules = [
-        'comment' => 'required|min:5',
+        'comment' => 'required',
     ];
 
     public function save()
@@ -46,6 +45,13 @@ class Blogdetail extends Component
             session()->flash('error', 'Error creating new record: ' . $e->getMessage());
         }
     }
+
+    public function delete($id)
+    {
+        $this->authorize('delete');
+        Comments::find($id)->delete();
+    }
+
     public function render()
     {
         $user = User::all();

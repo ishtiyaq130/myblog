@@ -19,7 +19,6 @@ class Myblog extends Component
     public $search;
     public $selectedAuthor = '';
     public $selectedCategory = '';
-    public $selectedDate;
     public $check = true;
     public $u_id;
     public $user_id;
@@ -29,11 +28,15 @@ class Myblog extends Component
     public $thumbnail;
     public $status;
 
+    public $sortField = 'publish_at';
+    public $sortDirection = 'asc';
+
     protected $queryString = [
         'search' => ['except' => ''],
         'selectedAuthor' => ['except' => ''],
         'selectedCategory' => ['except' => ''],
-        'selectedDate' => ['except' => ''],
+        'sortField' => ['except' => 'publish_at'],
+        'sortDirection' => ['except' => 'asc'],
     ];
 
     public function delete($id)
@@ -57,11 +60,15 @@ class Myblog extends Component
         $this->resetPage();
     }
 
-    public function updatingSelectedDate()
+    public function sortBy($field)
     {
-        $this->resetPage();
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
     }
-
 
 
     public function render()
@@ -80,9 +87,7 @@ class Myblog extends Component
             $blogsQuery->where('title', 'like', '%' . $this->search . '%');
         }
 
-        if ($this->selectedDate) {
-            $blogsQuery->whereDate('publish_at', $this->selectedDate);
-        }
+        $blogsQuery->orderBy($this->sortField, $this->sortDirection);
 
         $blogs = $blogsQuery->paginate(5);
 

@@ -23,13 +23,13 @@
             </div>
         @endif
         @if ($isLogged)
-        <form wire:submit.prevent="save" class=" mt-8">
+        <form wire:submit="save" class=" mt-8">
             <div
                 class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <label for="comment" class="sr-only">Your comment</label>
-                <textarea id="comment" rows="6" wire:model="comment"
+                <input id="comment" rows="6" wire:model="comment"
                     class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
-                    placeholder="Write a comment..." required></textarea>
+                    placeholder="Write a comment..." required></input>
                     @error('comment') <span class="text-red-500">{{ $message }}</span> @enderror
             </div>
             <button type="submit" class="mt-4 p-2 rounded dark:bg-gray-900 text-white">
@@ -49,7 +49,7 @@
                             src="{{ asset('images/th.jpeg') }}">
                         <div class="flex-col">
                             <div class="flex items-center text-white flex-1 ml-4 font-bold leading-tight">{{ $comment->user->name }}
-                                <span class="ml-2 text-xs  text-white font-normal text-gray-500">{{$comment->created_at->format('Y-m-d') }}</span>
+                                <span class="ml-2 text-xs  text-white font-normal text-gray-500">{{$comment->created_at->format('d-m-Y') }}</span>
                             </div>
                             <div class="flex-1  ml-4 text-sm  text-white font-medium leading-loose text-gray-600">
                                 {{$comment->comment}}
@@ -57,10 +57,7 @@
                         </div>
                     </div>
                 </div>
-
         </section>
         @endforeach
-
-
     </div>
 </div>
