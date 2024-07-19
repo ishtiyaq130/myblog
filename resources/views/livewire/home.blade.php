@@ -1,6 +1,6 @@
 @if ($blogs && count($blogs) > 0)
 @foreach ($blogs as $blogs)
-<div class="flex  mx-4">
+<div class="flex justify-center  mx-4">
     <div class="container mt-8 max-w-[12rem] mx-2 ml-4 dark:bg-gray-800">
         <div class="w-50 rounded overflow-hidden shadow-lg border border-grey-500">
             <img class=" w-full" src="{{ asset('storage/' . $blogs->thumbnail) }}" alt="Sunset in the mountains">
