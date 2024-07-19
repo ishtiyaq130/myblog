@@ -42,7 +42,6 @@
 
         <!-- Table -->
         <div class="overflow-x-auto">
-
             <table class=" table-fixed w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <thead class="bg-gray-100 dark:bg-gray-700">
                     <tr>
@@ -67,7 +66,6 @@
                     </tr>
                 </thead>
                 <tbody>
-
                     @if ($blogs && count($blogs) > 0)
                         @foreach ($blogs as $blog)
                             <tr class="border-t border-gray-200 dark:border-gray-700">
@@ -91,6 +89,10 @@
                                     @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'delete'))
                                     <button wire:click="delete({{ $blog->blog_id }})" wire:confirm="Are you sure you want to delete this project?" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delete</button>
                                     @endif
+
+                                    <div wire:loading wire:target="delete({{ $blog->blog_id }})">
+                                        deleting...
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

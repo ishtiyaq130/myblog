@@ -10,7 +10,6 @@ use App\Models\Category;
 use App\Models\User;
 use App\Helpers\RoleHelper;
 use Illuminate\Support\Facades\Auth;
-
 class Myblog extends Component
 {
     use WithPagination;
@@ -41,6 +40,7 @@ class Myblog extends Component
 
     public function delete($id)
     {
+        sleep(2);
         $this->authorize('delete');
         Blog::find($id)->delete();
     }
@@ -70,7 +70,6 @@ class Myblog extends Component
         }
     }
 
-
     public function render()
     {
         $blogsQuery = Blog::query();
@@ -93,7 +92,6 @@ class Myblog extends Component
 
         $categories = Category::all();
         $users = User::all();
-
         return view('livewire.myblog', [
             'blogs' => $blogs,
             'categories' => $categories,
