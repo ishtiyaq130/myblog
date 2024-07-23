@@ -1,4 +1,3 @@
-
 <x-layout.app>
-<livewire:create-post/>
+    <livewire:storecsv/>
 </x-layout.app>

@@ -4,6 +4,9 @@ namespace App\Http\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use App\Mail\VerifyEmail;
+use Illuminate\Support\Facades\Mail;
+
 use Hash;
 use App\Models\User;
 
@@ -82,6 +85,9 @@ class Login extends Component
             ];
             Auth::attempt($credentials);
 
+
+
+            Mail::to($user->email)->send(new VerifyEmail($user));
             session()->flash('message','New Record Created Successfully');
             return redirect("/");
         }catch(\Exception $e){

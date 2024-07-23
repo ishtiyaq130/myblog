@@ -5,6 +5,8 @@ use App\Http\Livewire\Register;
 use App\Http\Livewire\Login;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Blogdetail;
+use App\Http\Controllers\Auth\VerificationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,32 +23,14 @@ Route::get('/', function () {
 });
 Route::view('login','livewire.login_form')->name('login');
 
-
-// dd(auth()->user());
-// Route::middleware(['auth' => 'role:0,2'])->group(function() {
-// });
-// ->middleware('role:0');
-
-// Route::middleware(['auth'])->group(function () {
-// })->middleware('role:1');
-
 Route::get('/create', function () {
     return view('components.pages.create');
 });
 
-// Route::get('/editblog/{{id}}', function () {
-//     return view('editblog');
-// });
+Route::get('/storecsv', function () {
+    return view('components.pages.storecsv');
+});
 
-
-
-// Route::get('/register', function () {
-//     return view('register_user');
-// });
-
-// Route::get('/login', function () {
-//     return view('login');
-// });
 
 Route::get('/blogs/{id}',function ($id) {
     return view('components.pages.index',['id' => $id]);
@@ -60,8 +44,16 @@ Route::post('/logout', function() {
 Route::get('/myblog', function () {
     return view('components.pages.myblog');
 });
-Route::group(['middleware' => ['auth']], function () {
-});
 
+
+
+
+Route::get('/email/verify/{user_id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
+Route::post('/email/resend', [VerificationController::class, 'resend'])
+    ->middleware(['auth'])
+    ->name('verification.resend');
 
 

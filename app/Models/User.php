@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -23,6 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'email_verified_at',
     ];
 
     /**
@@ -39,7 +40,7 @@ class User extends Authenticatable
 
     public function blogs()
     {
-        return $this->hasMany(Blog::class);
+        return $this->hasMany(Blog::class,'blog_is');
     }
     /**
      * The attributes that should be cast.
@@ -49,4 +50,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function markEmailAsVerified()
+    {
+        $this->email_verified_at = now();
+        return $this->save();
+    }
+
+    public function hasVerifiedEmail()
+    {
+        return !is_null($this->email_verified_at);
+    }
 }

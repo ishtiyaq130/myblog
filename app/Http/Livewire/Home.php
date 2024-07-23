@@ -10,12 +10,17 @@ use App\Models\User;
 class Home extends Component
 {
     public function render()
-    {
-        $blogs = Blog::all();
-        $categories = Category::all();
-        $users = User::all();
-        return view('livewire.home',['blogs' => $blogs, 'categories' => $categories,
-            'users' => $users,]);
-    }
+{
+    $categories = Category::all();
+    $users = User::all();
+    $blogs = Blog::with('users', 'category')->get();
+    // dd($users);
+    return view('livewire.home', [
+        'blogs' => $blogs,
+        'categories' => $categories,
+        'users' => $users,
+    ]);
+}
+
 
 }

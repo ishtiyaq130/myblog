@@ -40,7 +40,7 @@ class Myblog extends Component
 
     public function delete($id)
     {
-        sleep(2);
+        // sleep(2);
         $this->authorize('delete');
         Blog::find($id)->delete();
     }

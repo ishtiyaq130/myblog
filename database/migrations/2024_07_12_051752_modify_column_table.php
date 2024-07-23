@@ -14,7 +14,7 @@ class ModifyColumnTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('role',[0,1,2])->change();
+            // $table->enum('role',[0,1,2])->change();
         });
     }
 

@@ -5,7 +5,7 @@
         <div class="flex items-center space-x-4 mb-4">
             <!-- Filter by Author -->
             <div class="relative">
-                <select wire:model="selectedAuthor" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                <select wire:model="selectedAuthor" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-white-800 dark:text-black dark:border-gray-600">
                     <option value="">Filter by Author</option>
                     @foreach ($users as $user)
                         @if ($user->role == 0)
@@ -19,7 +19,7 @@
             </div>
 
             <div class="relative">
-                <select wire:model="selectedCategory" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                <select wire:model="selectedCategory" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-white-800 dark:text-black dark:border-gray-600">
                     <option value="">Filter by Category</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
@@ -34,9 +34,13 @@
 
             @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'create'))
             <div class="relative">
-                <a href="{{ url('/create') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Create</a>
+                <a href="{{ url('/create') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-yellow-500">Create</a>
             </div>
             @endif
+
+            <div class="relative">
+                <a href="{{ url('/storecsv') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-green-500">Upload Bulk</a>
+            </div>
 
         </div>
 
@@ -70,7 +74,7 @@
                         @foreach ($blogs as $blog)
                             <tr class="border-t border-gray-200 dark:border-gray-700">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $i++}}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->users->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->users ? $blog->users->name : 'Unknown' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->title }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ $blog->category->category_name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">@if ($blog->status == 1)
@@ -85,9 +89,9 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
-                                    <button wire:click="update({{$blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Edit</button>
+                                    <button wire:click="update({{$blog->blog_id }})" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500">Edit</button>
                                     @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'delete'))
-                                    <button wire:click="delete({{ $blog->blog_id }})" wire:confirm="Are you sure you want to delete this project?" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-sky-500/50">Delete</button>
+                                    <button wire:click="delete({{ $blog->blog_id }})" wire:confirm="Are you sure you want to delete this project?" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-red-500">Delete</button>
                                     @endif
 
                                     <div wire:loading wire:target="delete({{ $blog->blog_id }})">
