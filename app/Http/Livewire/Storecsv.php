@@ -6,6 +6,9 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Jobs\BlogData;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 
 class Storecsv extends Component
 {
@@ -54,5 +57,30 @@ class Storecsv extends Component
         } else {
             session()->flash('error', 'No CSV file provided.');
         }
+    }
+
+    public function export(){
+        // dd('hellow');
+        $fileName = 'data.csv';
+
+        $callback = function() {
+            $file = fopen('php://output', 'w');
+            $columns = ['blog_id', 'user_id', 'category_id', 'title', 'thumbnail','content','status']; // Add your column names here
+
+            fputcsv($file, $columns);
+
+            $data = DB::table('blog')->get();
+
+            foreach ($data as $row) {
+                fputcsv($file, (array) $row);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ]);
     }
 }

@@ -42,6 +42,10 @@
                 <a href="{{ url('/storecsv') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-green-500">Upload Bulk</a>
             </div>
 
+            <div class="relative">
+                <a href="{{ url('/exportcsv') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-blue-500">Export Data</a>
+            </div>
+
         </div>
 
         <!-- Table -->

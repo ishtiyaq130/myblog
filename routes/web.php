@@ -5,6 +5,7 @@ use App\Http\Livewire\Register;
 use App\Http\Livewire\Login;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Blogdetail;
+use App\Http\Livewire\Storecsv;
 use App\Http\Controllers\Auth\VerificationController;
 
 /*
@@ -30,6 +31,9 @@ Route::get('/create', function () {
 Route::get('/storecsv', function () {
     return view('components.pages.storecsv');
 });
+
+
+Route::get('/exportcsv', [Storecsv::class,'export']);
 
 
 Route::get('/blogs/{id}',function ($id) {
