@@ -65,7 +65,7 @@ class Storecsv extends Component
 
         $callback = function() {
             $file = fopen('php://output', 'w');
-            $columns = ['blog_id', 'user_id', 'category_id', 'title', 'thumbnail','content','status']; // Add your column names here
+            $columns = ['blog_id', 'user_id', 'category_id', 'title', 'thumbnail','content','status', 'publish_at', 'created_at', 'updated_at']; // Add your column names here
 
             fputcsv($file, $columns);
 

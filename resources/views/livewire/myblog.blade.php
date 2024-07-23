@@ -29,21 +29,21 @@
 
 
             <div class="relative">
-                <input type="text" wire:model="search" placeholder="Search by Title" class="block w-full appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                <input type="text" wire:model="search" placeholder="Search by Title" class="block w-full appearance-none bg-white border border-black text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white dark:bg-gray-800 dark:text-black ">
             </div>
 
             @if (App\Helpers\RoleHelper::can(Auth::user()->role, 'create'))
             <div class="relative">
-                <a href="{{ url('/create') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-yellow-500">Create</a>
+                <a href="{{ url('/create') }}" class="border border-black py-2 px-3 ml-4 rounded leading-tight bg-yellow-500">Create</a>
             </div>
             @endif
 
             <div class="relative">
-                <a href="{{ url('/storecsv') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-green-500">Upload Bulk</a>
+                <a href="{{ url('/storecsv') }}" class="border border-black py-2 px-3 ml-4 rounded leading-tight bg-green-500">Upload Bulk</a>
             </div>
 
             <div class="relative">
-                <a href="{{ url('/exportcsv') }}" class="border border-grey-500 py-2 px-3 ml-4 rounded leading-tight bg-blue-500">Export Data</a>
+                <a href="{{ url('/exportcsv') }}" class="border border-black py-2 px-3 ml-4 rounded leading-tight bg-blue-500">Export Data</a>
             </div>
 
         </div>

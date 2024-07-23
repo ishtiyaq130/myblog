@@ -4,7 +4,7 @@
         <div class="max-w-2xl mx-auto bg-white p-6 shadow-lg rounded">
             <img class="w-full border rounded" src="{{ asset('storage/' . $blog->thumbnail) }}" alt="Blog Image">
             <h1 class="text-2xl">Title- {{ $blog->title }}</h1>
-            <p class="text-lg text-gray-700 mt-2">Auther- {{ $blog->users->name }}</p>
+            <p class="text-lg text-gray-700 mt-2">Auther- {{ $blog->users ? $blog->users->name : 'Unknown' }}</p>
             <p class="text-lg text-gray-700 mt-2">Category- {{ $blog->category->category_name }}</p>
             <p class="text-gray-700 mt-4">{{ $blog->content }}</p>
         </div>
